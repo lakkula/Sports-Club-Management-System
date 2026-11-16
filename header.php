@@ -1,7 +1,5 @@
 <?php
-// =====================================================
-// Common Header & Top Navigation Bar (includes/header.php)
-// =====================================================
+// Common Header & Top Navigation Bar
 
 if (!isset($page_title)) {
     $page_title = "Sports Club Management System";
@@ -13,7 +11,7 @@ if (!isset($page_title)) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($page_title); ?> - Sports Club Management System</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body class="app-body">
 
