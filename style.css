@@ -1,3 +1,42 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --navy-dark: #0b192c;
+    --navy-main: #13294b;
+    --navy-light: #1e3a66;
+    --accent-blue: #2563eb;
+    --accent-blue-hover: #1d4ed8;
+    --accent-green: #16a34a;
+    --accent-amber: #d97706;
+    --accent-red: #dc2626;
+    --accent-red-hover: #b91c1c;
+    --bg-light: #f1f5f9;
+    --bg-white: #ffffff;
+    --border-color: #dbe2ea;
+    --text-dark: #1e293b;
+    --text-muted: #64748b;
+    --shadow-sm: 0 2px 6px rgba(11, 25, 44, 0.06);
+    --shadow-md: 0 8px 24px rgba(11, 25, 44, 0.12);
+    --radius: 8px;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+    line-height: 1.5;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+//header
 .topbar {
     background-color: var(--navy-dark);
     color: #ffffff;
@@ -68,6 +107,7 @@
     color: #ffffff;
 }
 
+//login
 .login-page {
     min-height: 100vh;
     background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy-main) 60%, var(--navy-light) 100%);
@@ -170,3 +210,5 @@
     font-size: 0.85rem;
     color: var(--text-muted);
 }
+
+//sidebar
