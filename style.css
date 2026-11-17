@@ -36,7 +36,7 @@ a {
     color: inherit;
 }
 
-//header
+/* header */
 .topbar {
     background-color: var(--navy-dark);
     color: #ffffff;
@@ -107,7 +107,7 @@ a {
     color: #ffffff;
 }
 
-//login
+/* login */
 .login-page {
     min-height: 100vh;
     background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy-main) 60%, var(--navy-light) 100%);
@@ -211,4 +211,4 @@ a {
     color: var(--text-muted);
 }
 
-//sidebar
+/* sidebar */
