@@ -33,3 +33,36 @@ function toggleSidebar() {
         sidebar.classList.toggle("open");
     }
 }
+
+function validatePlayerForm() {
+    var form = document.getElementById("playerForm");
+    var fullName = document.getElementById("full_name").value.trim();
+    var dob = document.getElementById("dob").value;
+    var gender = document.getElementById("gender").value;
+    var contact = document.getElementById("contact").value.trim();
+    var email = document.getElementById("email").value.trim();
+    var sport = document.getElementById("sport").value.trim();
+    var joinDate = document.getElementById("join_date").value;
+
+    if (fullName === "" || dob === "" || gender === "" || contact === "" || email === "" || sport === "" || joinDate === "") {
+        showValidationError(form, "Please complete all required player fields marked with *.");
+        return false;
+    }
+
+    if (contact.length < 7) {
+        showValidationError(form, "Please enter a valid contact number (at least 7 characters).");
+        return false;
+    }
+
+    if (email.indexOf("@") === -1 || email.indexOf(".") === -1) {
+        showValidationError(form, "Please enter a valid email address.");
+        return false;
+    }
+
+    return true;
+}
+
+function confirmDelete(recordType, recordName) {
+    var message = "Are you sure you want to delete this " + recordType + ": \"" + recordName + "\"? This action cannot be undone.";
+    return confirm(message);
+}
