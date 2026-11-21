@@ -66,3 +66,19 @@ function confirmDelete(recordType, recordName) {
     var message = "Are you sure you want to delete this " + recordType + ": \"" + recordName + "\"? This action cannot be undone.";
     return confirm(message);
 }
+```function validateEventForm() {
+    var form = document.getElementById("eventForm");
+    var eventName = document.getElementById("event_name").value.trim();
+    var sport = document.getElementById("sport").value.trim();
+    var eventDate = document.getElementById("event_date").value;
+    var startTime = document.getElementById("start_time").value;
+    var location = document.getElementById("location").value.trim();
+    var status = document.getElementById("status").value;
+
+    if (eventName === "" || sport === "" || eventDate === "" || startTime === "" || location === "" || status === "") {
+        showValidationError(form, "Please complete all required event fields marked with *.");
+        return false;
+    }
+
+    return true;
+}```
