@@ -154,8 +154,8 @@ $sql = "SELECT p.*, t.team_name
         ORDER BY p.player_id DESC";
 $players_result = mysqli_query($conn, $sql);
 
-include 'includes/header.php';
-include 'includes/sidebar.php';
+include 'header.php';
+include 'sidebar.php';
 ?>
 
         <!-- Main Page Content -->
