@@ -66,7 +66,7 @@ function confirmDelete(recordType, recordName) {
     var message = "Are you sure you want to delete this " + recordType + ": \"" + recordName + "\"? This action cannot be undone.";
     return confirm(message);
 }
-```function validateEventForm() {
+function validateEventForm() {
     var form = document.getElementById("eventForm");
     var eventName = document.getElementById("event_name").value.trim();
     var sport = document.getElementById("sport").value.trim();
@@ -81,4 +81,4 @@ function confirmDelete(recordType, recordName) {
     }
 
     return true;
-}```
+}
