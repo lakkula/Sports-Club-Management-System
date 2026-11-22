@@ -231,7 +231,7 @@ include 'sidebar.php';
                         <table class="data-table">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
+                                    <th hidden>ID</th>
                                     <th>Team Name</th>
                                     <th>Sport</th>
                                     <th>Category</th>
@@ -245,7 +245,7 @@ include 'sidebar.php';
                                 <?php if ($teams_result->num_rows > 0): ?>
                                     <?php while ($row = $teams_result->fetch_assoc()): ?>
                                         <tr>
-                                            <td>#<?php echo $row['team_id']; ?></td>
+                                            <td hidden>#<?php echo $row['team_id']; ?></td>
                                             <td><strong><?php echo htmlspecialchars($row['team_name']); ?></strong></td>
                                             <td><?php echo htmlspecialchars($row['sport']); ?></td>
                                             <td><?php echo htmlspecialchars($row['category']); ?></td>
