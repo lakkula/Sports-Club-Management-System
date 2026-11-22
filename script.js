@@ -15,6 +15,25 @@ function togglePasswordVisibility(inputId, buttonId) {
     }
 }
 
+function showValidationError(formElement, message) {
+    if (!formElement) {
+        return;
+    }
+
+    var existingAlert = document.getElementById("js-validation-alert");
+    if (existingAlert) {
+        existingAlert.remove();
+    }
+
+    var alertDiv = document.createElement("div");
+    alertDiv.id = "js-validation-alert";
+    alertDiv.className = "alert alert-error";
+    alertDiv.textContent = message;
+
+    formElement.parentNode.insertBefore(alertDiv, formElement);
+    alertDiv.scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
 function validateLoginForm() {
     var form = document.getElementById("loginForm");
     var username = document.getElementById("username").value.trim();
@@ -97,3 +116,20 @@ function validateTeamForm() {
 
     return true;
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    var successAlerts = document.querySelectorAll(".alert-success");
+    if (successAlerts.length > 0) {
+        setTimeout(function () {
+            for (var i = 0; i < successAlerts.length; i++) {
+                successAlerts[i].style.transition = "opacity 0.5s ease";
+                successAlerts[i].style.opacity = "0";
+                (function (el) {
+                    setTimeout(function () {
+                        el.style.display = "none";
+                    }, 500);
+                })(successAlerts[i]);
+            }
+        }, 4000);
+    }
+});
