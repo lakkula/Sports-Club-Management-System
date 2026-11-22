@@ -46,6 +46,31 @@ function validateLoginForm() {
     return true;
 }
 
+// ADDED: client-side validation for register.php
+function validateRegisterForm() {
+    var form = document.getElementById("registerForm");
+    var username = document.getElementById("username").value.trim();
+    var password = document.getElementById("password").value;
+    var confirmPassword = document.getElementById("confirm_password").value;
+
+    if (username === "" || password === "" || confirmPassword === "") {
+        showValidationError(form, "Please fill in all fields.");
+        return false;
+    }
+
+    if (password.length < 6) {
+        showValidationError(form, "Password must be at least 6 characters long.");
+        return false;
+    }
+
+    if (password !== confirmPassword) {
+        showValidationError(form, "Passwords do not match.");
+        return false;
+    }
+
+    return true;
+}
+
 function toggleSidebar() {
     var sidebar = document.getElementById("sidebar");
     if (sidebar) {

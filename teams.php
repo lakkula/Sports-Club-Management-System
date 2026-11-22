@@ -28,11 +28,17 @@ if (isset($_GET['msg'])) {
         $success_msg = "Team details updated successfully.";
     } elseif ($_GET['msg'] === 'deleted') {
         $success_msg = "Team deleted successfully.";
+    }elseif ($_GET['msg'] === 'denied') {
+        $error_msg = "Access denied. Only admins can modify teams."; 
     }
 }
 
 // DELETE OPERATION ($_GET['delete_id'])
 if (isset($_GET['delete_id']) && !empty($_GET['delete_id'])) {
+    if (!$is_admin) {
+        header("Location: teams.php?msg=denied");
+        exit();
+    }
     $delete_id = (int)$_GET['delete_id'];
 
     $stmt = $conn->prepare("DELETE FROM teams WHERE team_id = ?");
@@ -50,6 +56,10 @@ if (isset($_GET['delete_id']) && !empty($_GET['delete_id'])) {
 
 // ADD & UPDATE OPERATIONS ($_POST)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!$is_admin) {
+        header("Location: teams.php?msg=denied");
+        exit();
+    }
     $action      = isset($_POST['action']) ? $_POST['action'] : 'add';
     $team_id     = isset($_POST['team_id']) ? (int)$_POST['team_id'] : 0;
     $team_name   = isset($_POST['team_name']) ? trim($_POST['team_name']) : '';
@@ -112,6 +122,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // LOAD TEAM FOR EDITING ($_GET['edit_id'])
 if (isset($_GET['edit_id']) && !empty($_GET['edit_id']) && $_SERVER['REQUEST_METHOD'] !== 'POST') {
+    if (!$is_admin) {
+        header("Location: teams.php?msg=denied");
+        exit();
+    }
     $edit_id = (int)$_GET['edit_id'];
 
     $stmt = $conn->prepare("SELECT * FROM teams WHERE team_id = ?");
@@ -145,7 +159,9 @@ include 'sidebar.php';
             <div class="page-header">
                 <div>
                     <h1>Teams Management</h1>
+                    <?php if ($is_admin): ?>
                     <p>Create sports teams, assign coaches, and track squad player counts</p>
+                    <?php endif; ?>
                 </div>
             </div>
 
@@ -158,6 +174,7 @@ include 'sidebar.php';
             <?php endif; ?>
 
             <!-- Add / Edit Team Form Card -->
+            <?php if ($is_admin): ?>
             <section class="card">
                 <div class="card-header">
                     <h2><?php echo $edit_mode ? "Edit Team (ID #" . htmlspecialchars($edit_team['team_id']) . ")" : "Add New Team"; ?></h2>
@@ -219,6 +236,7 @@ include 'sidebar.php';
                     </form>
                 </div>
             </section>
+            <?php endif; ?>
 
             <!-- Teams Table Card -->
             <section class="card">
@@ -238,7 +256,9 @@ include 'sidebar.php';
                                     <th>Coach</th>
                                     <th>Players</th>
                                     <th>Description</th>
+                                    <?php if ($is_admin): ?>
                                     <th>Actions</th>
+                                    <?php endif; ?>
                                 </tr>
                             </thead>
                             <tbody>
@@ -256,6 +276,7 @@ include 'sidebar.php';
                                                 </span>
                                             </td>
                                             <td><?php echo !empty($row['description']) ? htmlspecialchars($row['description']) : '-'; ?></td>
+                                            <?php if ($is_admin): ?>
                                             <td>
                                                 <div class="action-buttons">
                                                     <a href="teams.php?edit_id=<?php echo $row['team_id']; ?>" class="btn btn-sm btn-edit">Edit</a>
@@ -266,11 +287,12 @@ include 'sidebar.php';
                                                     </a>
                                                 </div>
                                             </td>
+                                            <?php endif; ?>
                                         </tr>
                                     <?php endwhile; ?>
                                 <?php else: ?>
                                     <tr>
-                                        <td colspan="8" class="empty-state">No teams found.</td>
+                                        <td colspan="<?php echo $is_admin ? 8 : 7; ?>" class="empty-state">No teams found.</td>
                                     </tr>
                                 <?php endif; ?>
                             </tbody>

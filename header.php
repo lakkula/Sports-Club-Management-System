@@ -35,6 +35,7 @@ if (!isset($page_title)) {
         <div class="topbar-right">
             <span class="topbar-user">
                 Logged in as <strong><?php echo htmlspecialchars($_SESSION['username']); ?></strong>
+                (<?php echo htmlspecialchars(ucfirst($_SESSION['role'])); ?>)
             </span>
             <a href="logout.php" class="btn btn-logout">Logout</a>
         </div>
