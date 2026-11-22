@@ -274,7 +274,7 @@ include 'sidebar.php';
                         <table class="data-table">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
+                                    <th hidden>ID</th>
                                     <th>Full Name</th>
                                     <th>DOB</th>
                                     <th>Gender</th>
@@ -290,7 +290,7 @@ include 'sidebar.php';
                                 <?php if ($players_result->num_rows > 0): ?>
                                     <?php while ($row = $players_result->fetch_assoc()): ?>
                                         <tr>
-                                            <td>#<?php echo $row['player_id']; ?></td>
+                                            <td hidden>#<?php echo $row['player_id']; ?></td>
                                             <td><strong><?php echo htmlspecialchars($row['full_name']); ?></strong></td>
                                             <td><?php echo htmlspecialchars($row['dob']); ?></td>
                                             <td><?php echo htmlspecialchars($row['gender']); ?></td>
