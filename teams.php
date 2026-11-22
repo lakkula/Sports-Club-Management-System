@@ -140,12 +140,12 @@ include 'header.php';
 include 'sidebar.php';
 ?>
 
-<!-- Main Page Content -->
+        <!-- Main Page Content -->
         <main class="main-content">
             <div class="page-header">
                 <div>
-                    <h1>Events Management</h1>
-                    <p>Schedule matches, tournaments, and track event statuses</p>
+                    <h1>Teams Management</h1>
+                    <p>Create sports teams, assign coaches, and track squad player counts</p>
                 </div>
             </div>
 
@@ -157,135 +157,111 @@ include 'sidebar.php';
                 <div class="alert alert-error"><?php echo htmlspecialchars($error_msg); ?></div>
             <?php endif; ?>
 
-            <!-- Add / Edit Event Form Card -->
+            <!-- Add / Edit Team Form Card -->
             <section class="card">
                 <div class="card-header">
-                    <h2><?php echo $edit_mode ? "Edit Event (ID #" . htmlspecialchars($edit_event['event_id']) . ")" : "Add New Event"; ?></h2>
+                    <h2><?php echo $edit_mode ? "Edit Team (ID #" . htmlspecialchars($edit_team['team_id']) . ")" : "Add New Team"; ?></h2>
                 </div>
                 <div class="card-body">
-                    <form action="events.php" method="POST" id="eventForm" onsubmit="return validateEventForm();">
+                    <form action="teams.php" method="POST" id="teamForm" onsubmit="return validateTeamForm();">
                         <input type="hidden" name="action" value="<?php echo $edit_mode ? 'update' : 'add'; ?>">
                         <?php if ($edit_mode): ?>
-                            <input type="hidden" name="event_id" value="<?php echo htmlspecialchars($edit_event['event_id']); ?>">
+                            <input type="hidden" name="team_id" value="<?php echo htmlspecialchars($edit_team['team_id']); ?>">
                         <?php endif; ?>
 
                         <div class="form-grid">
                             <div class="form-group">
-                                <label for="event_name">Event Name *</label>
-                                <input type="text" id="event_name" name="event_name" class="form-control"
-                                       placeholder="e.g. Inter-University Football Cup"
-                                       value="<?php echo htmlspecialchars($edit_event['event_name']); ?>" required>
+                                <label for="team_name">Team Name *</label>
+                                <input type="text" id="team_name" name="team_name" class="form-control"
+                                       placeholder="e.g. Titans FC"
+                                       value="<?php echo htmlspecialchars($edit_team['team_name']); ?>" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="sport">Sport *</label>
                                 <input type="text" id="sport" name="sport" class="form-control"
                                        placeholder="e.g. Football"
-                                       value="<?php echo htmlspecialchars($edit_event['sport']); ?>" required>
+                                       value="<?php echo htmlspecialchars($edit_team['sport']); ?>" required>
                             </div>
 
                             <div class="form-group">
-                                <label for="event_date">Event Date *</label>
-                                <input type="date" id="event_date" name="event_date" class="form-control"
-                                       value="<?php echo htmlspecialchars($edit_event['event_date']); ?>" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="start_time">Start Time *</label>
-                                <input type="time" id="start_time" name="start_time" class="form-control"
-                                       value="<?php echo htmlspecialchars($edit_event['start_time']); ?>" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="location">Location *</label>
-                                <input type="text" id="location" name="location" class="form-control"
-                                       placeholder="e.g. Main Club Stadium"
-                                       value="<?php echo htmlspecialchars($edit_event['location']); ?>" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="status">Event Status *</label>
-                                <select id="status" name="status" class="form-control" required>
-                                    <option value="Upcoming" <?php echo ($edit_event['status'] === 'Upcoming') ? 'selected' : ''; ?>>Upcoming</option>
-                                    <option value="Ongoing" <?php echo ($edit_event['status'] === 'Ongoing') ? 'selected' : ''; ?>>Ongoing</option>
-                                    <option value="Completed" <?php echo ($edit_event['status'] === 'Completed') ? 'selected' : ''; ?>>Completed</option>
-                                    <option value="Cancelled" <?php echo ($edit_event['status'] === 'Cancelled') ? 'selected' : ''; ?>>Cancelled</option>
+                                <label for="category">Team Category *</label>
+                                <select id="category" name="category" class="form-control" required>
+                                    <option value="">-- Select Category --</option>
+                                    <option value="Men" <?php echo ($edit_team['category'] === 'Men') ? 'selected' : ''; ?>>Men</option>
+                                    <option value="Women" <?php echo ($edit_team['category'] === 'Women') ? 'selected' : ''; ?>>Women</option>
+                                    <option value="Mixed" <?php echo ($edit_team['category'] === 'Mixed') ? 'selected' : ''; ?>>Mixed</option>
                                 </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="coach_name">Coach Name *</label>
+                                <input type="text" id="coach_name" name="coach_name" class="form-control"
+                                       placeholder="e.g. Coach Marcus Reid"
+                                       value="<?php echo htmlspecialchars($edit_team['coach_name']); ?>" required>
                             </div>
 
                             <div class="form-group form-group-full">
                                 <label for="description">Description</label>
                                 <textarea id="description" name="description" class="form-control"
-                                          placeholder="Details about the event or participating teams..."><?php echo htmlspecialchars($edit_event['description']); ?></textarea>
+                                          placeholder="Brief notes about the team..."><?php echo htmlspecialchars($edit_team['description']); ?></textarea>
                             </div>
                         </div>
 
                         <div class="form-actions">
                             <button type="submit" class="btn btn-primary">
-                                <?php echo $edit_mode ? "Update Event" : "Add Event"; ?>
+                                <?php echo $edit_mode ? "Update Team" : "Add Team"; ?>
                             </button>
                             <?php if ($edit_mode): ?>
-                                <a href="events.php" class="btn btn-secondary">Cancel</a>
+                                <a href="teams.php" class="btn btn-secondary">Cancel</a>
                             <?php endif; ?>
                         </div>
                     </form>
                 </div>
             </section>
 
-            <!-- Events Table Card -->
+            <!-- Teams Table Card -->
             <section class="card">
                 <div class="card-header">
-                    <h2>All Club Events (<?php echo $events_result->num_rows; ?>)</h2>
+                    <h2>All Club Teams (<?php echo $teams_result->num_rows; ?>)</h2>
                 </div>
                 <div class="card-body">
-                    <!-- Events Data Table -->
+                    <!-- Teams Data Table -->
                     <div class="table-responsive">
                         <table class="data-table">
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Event Name</th>
+                                    <th>Team Name</th>
                                     <th>Sport</th>
-                                    <th>Date</th>
-                                    <th>Time</th>
-                                    <th>Location</th>
-                                    <th>Status</th>
+                                    <th>Category</th>
+                                    <th>Coach</th>
+                                    <th>Players</th>
                                     <th>Description</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php if ($events_result->num_rows > 0): ?>
-                                    <?php while ($row = $events_result->fetch_assoc()): ?>
-                                        <?php
-                                            $badge_class = 'badge-upcoming';
-                                            if ($row['status'] === 'Ongoing') {
-                                                $badge_class = 'badge-ongoing';
-                                            } elseif ($row['status'] === 'Completed') {
-                                                $badge_class = 'badge-completed';
-                                            } elseif ($row['status'] === 'Cancelled') {
-                                                $badge_class = 'badge-cancelled';
-                                            }
-                                        ?>
+                                <?php if ($teams_result->num_rows > 0): ?>
+                                    <?php while ($row = $teams_result->fetch_assoc()): ?>
                                         <tr>
-                                            <td>#<?php echo $row['event_id']; ?></td>
-                                            <td><strong><?php echo htmlspecialchars($row['event_name']); ?></strong></td>
+                                            <td>#<?php echo $row['team_id']; ?></td>
+                                            <td><strong><?php echo htmlspecialchars($row['team_name']); ?></strong></td>
                                             <td><?php echo htmlspecialchars($row['sport']); ?></td>
-                                            <td><?php echo htmlspecialchars($row['event_date']); ?></td>
-                                            <td><?php echo htmlspecialchars(substr($row['start_time'], 0, 5)); ?></td>
-                                            <td><?php echo htmlspecialchars($row['location']); ?></td>
+                                            <td><?php echo htmlspecialchars($row['category']); ?></td>
+                                            <td><?php echo htmlspecialchars($row['coach_name']); ?></td>
                                             <td>
-                                                <span class="badge <?php echo $badge_class; ?>">
-                                                    <?php echo htmlspecialchars($row['status']); ?>
+                                                <span class="badge badge-upcoming">
+                                                    <?php echo (int)$row['player_count']; ?> player(s)
                                                 </span>
                                             </td>
                                             <td><?php echo !empty($row['description']) ? htmlspecialchars($row['description']) : '-'; ?></td>
                                             <td>
                                                 <div class="action-buttons">
-                                                    <a href="events.php?edit_id=<?php echo $row['event_id']; ?>" class="btn btn-sm btn-edit">Edit</a>
-                                                    <a href="events.php?delete_id=<?php echo $row['event_id']; ?>"
+                                                    <a href="teams.php?edit_id=<?php echo $row['team_id']; ?>" class="btn btn-sm btn-edit">Edit</a>
+                                                    <a href="teams.php?delete_id=<?php echo $row['team_id']; ?>"
                                                        class="btn btn-sm btn-delete"
-                                                       onclick="return confirmDelete('event', '<?php echo htmlspecialchars(addslashes($row['event_name'])); ?>');">
+                                                       onclick="return confirmDelete('team', '<?php echo htmlspecialchars(addslashes($row['team_name'])); ?>');">
                                                         Delete
                                                     </a>
                                                 </div>
@@ -294,7 +270,7 @@ include 'sidebar.php';
                                     <?php endwhile; ?>
                                 <?php else: ?>
                                     <tr>
-                                        <td colspan="9" class="empty-state">No events found.</td>
+                                        <td colspan="8" class="empty-state">No teams found.</td>
                                     </tr>
                                 <?php endif; ?>
                             </tbody>
@@ -305,6 +281,6 @@ include 'sidebar.php';
         </main>
     </div>
 
-    <script src="js/script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
