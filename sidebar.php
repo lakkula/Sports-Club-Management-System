@@ -6,7 +6,7 @@ if (!isset($current_page)) {
 ?>
         <!-- Left Sidebar -->
         <aside class="sidebar" id="sidebar">
-            <div class="sidebar-title">Club Administration</div>
+            <div class="sidebar-title"><?php echo $is_admin ? 'Club Administration' : 'Player Portal'; ?></div>
             <nav class="sidebar-nav">
                 <a href="dashboard.php" class="nav-link <?php echo ($current_page === 'dashboard') ? 'active' : ''; ?>">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

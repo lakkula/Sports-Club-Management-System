@@ -2,7 +2,7 @@
 
 session_start();
 
-if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
+if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id']) && isset($_SESSION['role'])) {
     header("Location: dashboard.php");
     exit();
 }
@@ -23,6 +23,10 @@ if (isset($_GET['logged_out']) && $_GET['logged_out'] == '1') {
     $success = "You have been logged out successfully.";
 }
 
+if (isset($_GET['registered']) && $_GET['registered'] == '1') {
+    $success = "Registration successful! You can now log in.";
+}
+
 // Process login form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = isset($_POST['username']) ? trim($_POST['username']) : '';
@@ -31,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($username) || empty($password)) {
         $error = "Please enter both username and password.";
     } else {
-        $stmt = $conn->prepare("SELECT user_id, username, password FROM users WHERE username = ?");
+        $stmt = $conn->prepare("SELECT user_id, username, password,role FROM users WHERE username = ?");
         $stmt->bind_param("s", $username);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -43,6 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Store user details in PHP session
                 $_SESSION['user_id']  = $user['user_id'];
                 $_SESSION['username'] = $user['username'];
+                $_SESSION['role']     = $user['role'];
 
                 // Handle Remember Me cookie (expires in 30 days)
                 if (isset($_POST['remember_me'])) {
@@ -113,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         id="username"
                         name="username"
                         class="form-control"
-                        placeholder="Enter admin username"
+                        placeholder="Enter username"
                         value="<?php echo htmlspecialchars($remembered_username); ?>"
                         required
                     >
@@ -155,6 +160,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </form>
 
             <div class="login-footer">
+                <p>New player? <a href="register.php" style="color: #2563eb; font-weight: 600;">Register here</a></p>
                 <p>Default Admin: <strong>admin</strong> / <strong>admin123</strong></p>
             </div>
         </div>

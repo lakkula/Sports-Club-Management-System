@@ -98,11 +98,11 @@ include 'sidebar.php';
                     <span>&rarr;</span>
                 </a>
                 <a href="teams.php" class="quick-link-card">
-                    <span>Manage Teams</span>
+                    <span><?php echo $is_admin ? 'Manage Teams' : 'View Teams'; ?></span>
                     <span>&rarr;</span>
                 </a>
                 <a href="events.php" class="quick-link-card">
-                    <span>Manage Events</span>
+                    <span><?php echo $is_admin ? 'Manage Events' : 'View Events'; ?></span>
                     <span>&rarr;</span>
                 </a>
             </section>

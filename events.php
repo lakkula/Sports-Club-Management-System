@@ -30,10 +30,17 @@ if (isset($_GET['msg'])) {
     } elseif ($_GET['msg'] === 'deleted') {
         $success_msg = "Event deleted successfully.";
     }
+    elseif ($_GET['msg'] === 'denied') {
+        $error_msg = "Access denied. Only admins can modify events.";
+    }
 }
 
 // DELETE OPERATION ($_GET['delete_id'])
 if (isset($_GET['delete_id']) && !empty($_GET['delete_id'])) {
+    if (!$is_admin) {
+        header("Location: events.php?msg=denied");
+        exit();
+    }
     $delete_id = (int)$_GET['delete_id'];
 
     $stmt = $conn->prepare("DELETE FROM events WHERE event_id = ?");
@@ -51,6 +58,10 @@ if (isset($_GET['delete_id']) && !empty($_GET['delete_id'])) {
 
 // ADD & UPDATE OPERATIONS ($_POST)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!$is_admin) {
+        header("Location: events.php?msg=denied");
+        exit();
+    }
     $action      = isset($_POST['action']) ? $_POST['action'] : 'add';
     $event_id    = isset($_POST['event_id']) ? (int)$_POST['event_id'] : 0;
     $event_name  = isset($_POST['event_name']) ? trim($_POST['event_name']) : '';
@@ -117,6 +128,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // LOAD EVENT FOR EDITING ($_GET['edit_id'])
 if (isset($_GET['edit_id']) && !empty($_GET['edit_id']) && $_SERVER['REQUEST_METHOD'] !== 'POST') {
+    if (!$is_admin) {
+        header("Location: events.php?msg=denied");
+        exit();
+    }
     $edit_id = (int)$_GET['edit_id'];
 
     $stmt = $conn->prepare("SELECT * FROM events WHERE event_id = ?");
@@ -145,7 +160,9 @@ include 'sidebar.php';
             <div class="page-header">
                 <div>
                     <h1>Events Management</h1>
+                    <?php if ($is_admin): ?>
                     <p>Schedule matches, tournaments, and track event statuses</p>
+                    <?php endif; ?>
                 </div>
             </div>
 
@@ -158,6 +175,7 @@ include 'sidebar.php';
             <?php endif; ?>
 
             <!-- Add / Edit Event Form Card -->
+            <?php if ($is_admin): ?>
             <section class="card">
                 <div class="card-header">
                     <h2><?php echo $edit_mode ? "Edit Event (ID #" . htmlspecialchars($edit_event['event_id']) . ")" : "Add New Event"; ?></h2>
@@ -231,6 +249,7 @@ include 'sidebar.php';
                     </form>
                 </div>
             </section>
+            <?php endif; ?>
 
             <!-- Events Table Card -->
             <section class="card">
@@ -251,7 +270,9 @@ include 'sidebar.php';
                                     <th>Location</th>
                                     <th>Status</th>
                                     <th>Description</th>
-                                    <th>Actions</th>
+                                    <?php if ($is_admin): ?>
+                                        <th>Actions</th>
+                                    <?php endif; ?>
                                 </tr>
                             </thead>
                             <tbody>
@@ -280,6 +301,7 @@ include 'sidebar.php';
                                                 </span>
                                             </td>
                                             <td><?php echo !empty($row['description']) ? htmlspecialchars($row['description']) : '-'; ?></td>
+                                            <?php if ($is_admin): ?>
                                             <td>
                                                 <div class="action-buttons">
                                                     <a href="events.php?edit_id=<?php echo $row['event_id']; ?>" class="btn btn-sm btn-edit">Edit</a>
@@ -290,11 +312,12 @@ include 'sidebar.php';
                                                     </a>
                                                 </div>
                                             </td>
+                                            <?php endif; ?>
                                         </tr>
                                     <?php endwhile; ?>
                                 <?php else: ?>
                                     <tr>
-                                        <td colspan="9" class="empty-state">No events found.</td>
+                                        <td colspan="<?php echo $is_admin ? 9 : 8; ?>" class="empty-state">No events found.</td>
                                     </tr>
                                 <?php endif; ?>
                             </tbody>
