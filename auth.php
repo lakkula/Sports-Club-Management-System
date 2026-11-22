@@ -8,4 +8,7 @@ if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
 }
+
+$is_admin = (isset($_SESSION['role']) && $_SESSION['role'] === 'admin');
+
 ?>
