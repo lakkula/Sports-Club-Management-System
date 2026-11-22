@@ -243,7 +243,7 @@ include 'sidebar.php';
                         <table class="data-table">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
+                                    <th hidden>ID</th>
                                     <th>Event Name</th>
                                     <th>Sport</th>
                                     <th>Date</th>
@@ -268,7 +268,7 @@ include 'sidebar.php';
                                             }
                                         ?>
                                         <tr>
-                                            <td>#<?php echo $row['event_id']; ?></td>
+                                            <td hidden>#<?php echo $row['event_id']; ?></td>
                                             <td><strong><?php echo htmlspecialchars($row['event_name']); ?></strong></td>
                                             <td><?php echo htmlspecialchars($row['sport']); ?></td>
                                             <td><?php echo htmlspecialchars($row['event_date']); ?></td>
